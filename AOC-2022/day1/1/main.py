@@ -1,4 +1,4 @@
-with open("input.txt") as infile:
+with open('input.txt') as infile:
     input_calories = infile.readlines()
 
 max_count = 0
@@ -12,5 +12,5 @@ for line in input_calories:
     else:
         current_count += int(line.strip())
 
-print(f"max: {max_count}")  # max: 66616
+print(f'max: {max_count}')  # max: 66616
 

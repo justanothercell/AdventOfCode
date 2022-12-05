@@ -1,4 +1,4 @@
-with open("input.txt") as infile:
+with open('input.txt') as infile:
     rucksacks = infile.readlines()
 
 # rucksacks = "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSLn\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw".split('\n')
@@ -21,4 +21,4 @@ for i in range(0, len(rucksacks), 3):
             total += priority(item)
             break
 
-print(f"total: {total}")  # score: 2650
+print(f'total: {total}')  # score: 2650

@@ -1,4 +1,4 @@
-with open("input.txt") as infile:
+with open('input.txt') as infile:
     input_calories = infile.readlines()
 
 max_counts = []
@@ -14,6 +14,6 @@ for line in input_calories:
     else:
         current_count += int(line.strip())
 
-print(f"max 3: {max_counts}")  # max 3: [66250, 66306, 66616]
-print(f"sum(max 3): {sum(max_counts)}")  # max 3: [66250, 66306, 66616]
+print(f'max 3: {max_counts}')  # max 3: [66250, 66306, 66616]
+print(f'sum(max 3): {sum(max_counts)}')  # max 3: [66250, 66306, 66616]
 

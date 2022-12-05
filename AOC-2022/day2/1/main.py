@@ -1,4 +1,4 @@
-with open("input.txt") as infile:
+with open('input.txt') as infile:
     input_matches = infile.readlines()
 
 # example:
@@ -23,4 +23,4 @@ for match in input_matches:
     me = ["X", "Y", "Z"].index(match[2])
     score += score_table[opponent][me]
 
-print(f"score: {score}")  # score: 13526
+print(f'score: {score}')  # score: 13526
