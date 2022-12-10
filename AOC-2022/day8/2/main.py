@@ -33,4 +33,4 @@ for x in range(len(map[0])):
         max_score = max(max_score, score)
 
 
-print('max_score:', max_score)  # visible: 1832
+print('max_score:', max_score)  # max_score: 157320
