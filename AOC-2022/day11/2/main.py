@@ -1,3 +1,5 @@
+from time import time
+
 with open('input.txt') as infile:
     monkeys_notes = [row.strip() for row in infile.readlines()]
 
@@ -23,6 +25,8 @@ class Monkey:
 
 
 monkeys = []
+
+start = time()
 
 for i in range(0, len(monkeys_notes), 7):
     name, s_items, s_op, s_mod, s_true, s_false = monkeys_notes[i:i+6]
@@ -59,7 +63,6 @@ for i in range(10000):
                 monkeys[monkey.if_false].items.append(w)
             monkey.items = []
 
-
 inspects = []
 
 for monkey in monkeys:
@@ -69,6 +72,8 @@ for monkey in monkeys:
 inspects.sort()
 
 print(f'monkey_business: {inspects[-1] * inspects[-2]}')
+
+print(f'time: {time() - start}')
 
 # Monkey 0: inspected items 115025 times.
 # Monkey 1: inspected items 93029 times.
