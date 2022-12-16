@@ -20,7 +20,6 @@ class Valve:
     def __init__(self, flow, conns):
         self.flow = flow
         self.conns = conns
-        self.open = False
 
 
 valves = {}
