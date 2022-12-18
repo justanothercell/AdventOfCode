@@ -90,4 +90,4 @@ for x in range(max_bounds[0]):
                 open_sides += 1
 
 print(f'open_sides: {open_sides}')
-# open_sides: 3610
+# open_sides: 2082
