@@ -1,0 +1,12 @@
+[package]
+name = "qcrypt"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+qrcode = "0.12.0"
+bardecoder = "0.4.0"
+nokhwa = "0.9.4"
+image = "0.24.5"
