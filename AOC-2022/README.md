@@ -20,7 +20,7 @@
 | 18  | solved  | solved  |
 | 19  |         |         |
 | 20  | solved  | solved  |
-| 21  |         |         |
+| 21  | solved  | solved  |
 | 22  |         |         |
 | 23  |         |         |
 | 24  |         |         |
