@@ -24,6 +24,6 @@
 | 22  | solved | *      |
 | 23  |        |        |
 | 24  |        |        |
-| 25  |        |        |
+| 25  | solved | ✨      |
 
 `* = some bug but almost there`
