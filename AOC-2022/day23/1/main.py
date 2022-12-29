@@ -1,106 +1,147 @@
-with open('input.txt') as infile:
-    tiles = [l.rstrip() for l in infile.readlines()]
+import os
+os.system("")
 
-# row: 6
-# colum: 8
-# facing: 0
-# password: 6032
-# *tiles, _, movements = [
-#     '        ...#    ',
-#     '        .#..    ',
-#     '        #...    ',
-#     '        ....    ',
-#     '...#.......#    ',
-#     '........#...    ',
-#     '..#....#....    ',
-#     '..........#.    ',
-#     '        ...#....',
-#     '        .....#..',
-#     '        .#......',
-#     '        ......#.',
-#     '',
-#     '10R5L5R10L4R5L5',
+with open('input.txt') as infile:
+    tiles_in = [l.strip() for l in infile.readlines()]
+
+# width: 12
+# height: 10
+# empty: 110
+# tiles_in = [
+#     '....#..',
+#     '..###.#',
+#     '#...#.#',
+#     '.#...##',
+#     '#.###..',
+#     '##.#.##',
+#     '.#..#..',
 # ]
 
-x_ranges = []
-for y in range(len(tiles)):
-    mi = None
-    ma = len(tiles[y]) - 1
-    for x in range(len(tiles[y])):
-        if tiles[y][x] != ' ' and mi is None:
-            mi = x
-        if mi is not None and tiles[y][x] == ' ':
-            ma = x - 1
-            break
-    x_ranges.append((mi, ma))
+in_w, in_h = len(tiles_in[0]), len(tiles_in)
+s_w = in_w
+s_h = in_h
+w, h = in_w + s_w * 2, in_h + s_h * 2
 
-y_ranges = []
-for x in range(len(tiles[0])):
-    mi = None
-    ma = len(tiles) - 1
-    for y in range(len(tiles)):
-        if tiles[y][x] != ' ' and mi is None:
-            mi = y
-        if mi is not None and tiles[y][x] == ' ':
-            ma = y - 1
-            break
-    y_ranges.append((mi, ma))
 
-x_pos = x_ranges[0][0]
-y_pos = 0
-facing = 0
+class Elf:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.move = -1
 
-for instr in re.findall(r'(\d+|[RL])', movements):
-    try:
-        for _ in range(int(instr)):
-            next_x = x_pos
-            next_y = y_pos
-            match facing:
-                case 0:
-                    next_x += 1
-                    if next_x > x_ranges[y_pos][1]:
-                        next_x = x_ranges[y_pos][0]
-                case 1:
-                    next_y += 1
-                    if next_y > y_ranges[x_pos][1]:
-                        next_y = y_ranges[x_pos][0]
-                case 2:
-                    next_x -= 1
-                    if next_x < x_ranges[y_pos][0]:
-                        next_x = x_ranges[y_pos][1]
-                case 3:
-                    next_y -= 1
-                    if next_y < y_ranges[x_pos][0]:
-                        next_y = y_ranges[x_pos][1]
-            if tiles[next_y][next_x] == '.':
-                x_pos = next_x
-                y_pos = next_y
+
+elves = []
+tiles = []
+for y in range(w):
+    row = []
+    for x in range(h):
+        if s_w <= x < w - s_w and s_h <= y < h - s_h:
+            if tiles_in[y - s_h][x - s_w] == '#':
+                row.append(1)
+                elves.append(Elf(x, y))
             else:
-                # print(facing, instr, 'bonk!')
-                break
-        #     print(x_pos, y_pos)
-        # else:
-        #     print(facing, instr, 'swoosh')
-        # for y in range(len(tiles)):
-        #     for x in range(len(tiles[y])):
-        #         if (x, y) != (x_pos, y_pos):
-        #             print(tiles[y][x], end='')
-        #         else:
-        #             print('X', end='')
-        #     print()
-        # print()
-    except ValueError:
-        match instr:
-            case "L":
-                facing = (facing + 3) % 4
-            case "R":
-                facing = (facing + 1) % 4
+                row.append(0)
+        else:
+            row.append(0)
+    tiles.append(row)
 
-print(f'x_pos: {x_pos + 1}')
-print(f'y_pos: {y_pos + 1}')
-print(f'facing: {facing}')
-print(f'password: {(y_pos + 1) * 1000 + (x_pos + 1) * 4 + facing}')
-# x_pos: 86
-# y_pos: 73
-# facing: 2
-# password: 73346
+
+def print_tiles(moves=None):
+    for y in range(h):
+        for x in range(w):
+            if (x + y) % 2 == 0:
+                print('\x1b[48;5;239m', end='')
+            else:
+                print('\x1b[48;5;241m', end='')
+            if tiles[y][x] != 0:
+                print(' # ', end='')
+            elif moves is not None:
+                if moves[y][x] == 0:
+                    print('   ', end='')
+                elif moves[y][x] == 1:
+                    print(' * ', end='')
+                else:
+                    print(' x ', end='')
+            else:
+                print('   ', end='')
+        print('\x1b[0m')
+    print()
+
+
+# print_tiles()
+
+tick_count = 0
+while tick_count < 10:
+    moves_tiles = [[0 for _ in range(w)] for _ in range(h)]
+    for elf in elves:
+        if tiles[elf.y - 1][elf.x - 1] + tiles[elf.y - 1][elf.x] + tiles[elf.y - 1][elf.x + 1] + \
+                tiles[elf.y][elf.x - 1] + tiles[elf.y][elf.x + 1] + \
+                tiles[elf.y + 1][elf.x - 1] + tiles[elf.y + 1][elf.x] + tiles[elf.y + 1][elf.x + 1] == 0:
+            elf.move = -1
+        else:
+            for i in range(4):
+                if (tick_count + 3) % 4 == 3-i:        # N
+                    if tiles[elf.y - 1][elf.x - 1] + tiles[elf.y - 1][elf.x] + tiles[elf.y - 1][elf.x + 1] == 0:
+                        moves_tiles[elf.y - 1][elf.x] += 1
+                        elf.move = 3
+                        break
+                if (tick_count + 2) % 4 == 3-i:  # S
+                    if tiles[elf.y + 1][elf.x - 1] + tiles[elf.y + 1][elf.x] + tiles[elf.y + 1][elf.x + 1] == 0:
+                        moves_tiles[elf.y + 1][elf.x] += 1
+                        elf.move = 1
+                        break
+                if (tick_count + 1) % 4 == 3-i:  # W
+                    if tiles[elf.y - 1][elf.x - 1] + tiles[elf.y][elf.x - 1] + tiles[elf.y + 1][elf.x - 1] == 0:
+                        moves_tiles[elf.y][elf.x - 1] += 1
+                        elf.move = 2
+                        break
+                if tick_count % 4 == 3-i:  # E
+                    if tiles[elf.y - 1][elf.x + 1] + tiles[elf.y][elf.x + 1] + tiles[elf.y + 1][elf.x + 1] == 0:
+                        moves_tiles[elf.y][elf.x + 1] += 1
+                        elf.move = 0
+                        break
+            else:
+                elf.move = -1
+    # print_tiles(moves=moves_tiles)
+    for elf in elves:
+        p = elf.x, elf.y
+        if elf.move == 0:  # E
+            if moves_tiles[elf.y][elf.x + 1] == 1:
+                tiles[elf.y][elf.x] = 0
+                tiles[elf.y][elf.x + 1] = 1
+                elf.x += 1
+        elif elf.move == 1:  # S
+            if moves_tiles[elf.y + 1][elf.x] == 1:
+                tiles[elf.y][elf.x] = 0
+                tiles[elf.y + 1][elf.x] = 1
+                elf.y += 1
+        elif elf.move == 2:  # W
+            if moves_tiles[elf.y][elf.x - 1] == 1:
+                tiles[elf.y][elf.x] = 0
+                tiles[elf.y][elf.x - 1] = 1
+                elf.x -= 1
+        elif elf.move == 3:  # N
+            if moves_tiles[elf.y - 1][elf.x] == 1:
+                tiles[elf.y][elf.x] = 0
+                tiles[elf.y - 1][elf.x] = 1
+                elf.y -= 1
+    # print_tiles()
+    # print('======')
+    # print()
+    tick_count += 1
+# print_tiles()
+min_bounds = w, h
+max_bounds = 0, 0
+for elf in elves:
+    min_bounds = min(min_bounds[0], elf.x), min(min_bounds[1], elf.y)
+    max_bounds = max(max_bounds[0], elf.x), max(max_bounds[1], elf.y)
+
+width = max_bounds[0] - min_bounds[0] + 1
+height = max_bounds[1] - min_bounds[1] + 1
+empty = width * height - len(elves)
+print(f'width: {width}')
+print(f'height: {height}')
+print(f'empty: {empty}')
+# width: 82
+# height: 81
+# empty: 4052
