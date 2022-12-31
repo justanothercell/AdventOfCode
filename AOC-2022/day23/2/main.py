@@ -6,7 +6,7 @@ with open('input.txt') as infile:
 
 # width: 12
 # height: 10
-# empty: 110
+# steps: 20
 # tiles_in = [
 #     '....#..',
 #     '..###.#',
@@ -145,14 +145,15 @@ for elf in elves:
     min_bounds = min(min_bounds[0], elf.x), min(min_bounds[1], elf.y)
     max_bounds = max(max_bounds[0], elf.x), max(max_bounds[1], elf.y)
 
+print(min_bounds, max_bounds)
 width = max_bounds[0] - min_bounds[0] + 1
 height = max_bounds[1] - min_bounds[1] + 1
 empty = width * height - len(elves)
-print(f'steps: {tick_count}')
+print(f'steps: {tick_count + 1}')
 print(f'width: {width}')
 print(f'height: {height}')
 print(f'empty: {empty}')
-# steps: 977
+# steps: 978
 # width: 134
 # height: 138
 # empty: 15902

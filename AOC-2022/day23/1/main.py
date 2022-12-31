@@ -135,7 +135,7 @@ max_bounds = 0, 0
 for elf in elves:
     min_bounds = min(min_bounds[0], elf.x), min(min_bounds[1], elf.y)
     max_bounds = max(max_bounds[0], elf.x), max(max_bounds[1], elf.y)
-
+print(min_bounds, max_bounds)
 width = max_bounds[0] - min_bounds[0] + 1
 height = max_bounds[1] - min_bounds[1] + 1
 empty = width * height - len(elves)
