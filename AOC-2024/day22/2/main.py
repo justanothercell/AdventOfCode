@@ -31,14 +31,13 @@ def next(num):
 # print('-'*20)
 
 print('generating sequences...')
-seqs = []
-all_wins = set()
+seqs = {}
 for i, num in enumerate(numbers):
     if i % 100 == 0:
         print('.', end='', flush=True)
     n = num
     window = 0
-    seq = {}
+    seq = set()
     for j in range(2000):
         nn = next(n)
         delta = nn % 10 - n % 10
@@ -48,28 +47,13 @@ for i, num in enumerate(numbers):
         n = nn
         if j >= 4: # cant sell before
             if window not in seq: # if it was we would have stopped before and never reached this
-                seq[window] = nn % 10
-                all_wins.add(window)
-    seqs.append(seq)
+                if window not in seqs:
+                    seqs[window] = 0
+                seqs[window] += nn % 10
+                seq.add(window)
 print()
-print(f'detected {len(all_wins)} windows in 2000 iterations over {len(numbers)} inputs')
-print('comparing windows...')
-max_win = 0
-max_profit = 0
-for i, window in enumerate(all_wins):
-    if i % 1000 == 0:
-        if i % 10_000 == 0:
-            print('|', end='', flush=True)
-        else:
-            print('.', end='', flush=True)
-    profit = 0
-    for seq in seqs:
-        if window in seq:
-            profit += seq[window]
-    if profit > max_profit:
-        max_profit = profit
-        max_win = window
-print('done!')
+max_win = max(seqs, key=seqs.get)
+max_profit = seqs[max_win]
 b = f'{max_win:20b}'
 print(f'max_win = {b[0:5]} {b[5:10]} {b[10:15]} {b[15:20]} for {max_profit} bananas')
 w0 = ((max_win >> 15) & 0b01111) * (-1 if ((max_win >> 15) & 0b10000) > 0 else 1)
