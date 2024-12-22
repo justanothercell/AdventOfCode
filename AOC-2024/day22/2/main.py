@@ -12,7 +12,7 @@ def next(num):
     num = prune(mix(num * 64, num))
     # step 2
     num = prune(mix(num // 32, num))
-    #step 3
+    # step 3
     num = prune(mix(num * 2048, num))
     return num
 
@@ -52,6 +52,7 @@ for i, num in enumerate(numbers):
                 seqs[window] += nn % 10
                 seq.add(window)
 print()
+print(f'registred {len(seqs)} windows')
 max_win = max(seqs, key=seqs.get)
 max_profit = seqs[max_win]
 b = f'{max_win:20b}'
